@@ -1,0 +1,139 @@
+<p-toast></p-toast>
+<p-toast position="top-center" key="tc"></p-toast>
+
+<div class="panel panel-warning">
+  <div class="panel-heading">Usagers Crud</div>
+  <div class="panel-body">
+    <p-toolbar styleClass="p-mb-4">
+      <ng-template pTemplate="left">
+        <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2"
+                (click)="openNew()"></button>
+        <button pButton pRipple icon="pi pi-trash" class="p-button-danger ml-3" (click)="deleteSelectedUsagers()" [disabled]="!selectedUsagers || !selectedUsagers.length"></button>
+
+      </ng-template>
+
+    </p-toolbar>
+
+    <p-table #dt1 [value]="usagers"
+             [globalFilterFields]="['nom','an','h','pt','fct']" [paginator]="true" [rows]="4"
+             [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+             [rowHover]="true"
+             [(selection)]="selectedUsagers"
+    >
+
+      <ng-template pTemplate="caption">
+        <div class="p-d-flex">
+          <span class="p-input-icon-right p-ml-auto">
+            <i class="pi pi-search"></i>
+            <input pInputText type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                   placeholder="Search keyword" />
+          </span>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="header" sortMode="multiple">
+        <tr>
+          <th style="width: 3rem">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th pSortableColumn="nom">Title<p-sortIcon field="nom"></p-sortIcon>
+          </th>
+          <th pSortableColumn="an">Date<p-sortIcon field="an"></p-sortIcon>
+          </th>
+          <th pSortableColumn="h">Description<p-sortIcon field="h"></p-sortIcon>
+          </th>
+          <th pSortableColumn="pt">TotalThemes<p-sortIcon field="pt"></p-sortIcon>
+          </th>
+          <th pSortableColumn="fct">TotalViews<p-sortIcon field="fct"></p-sortIcon>
+          </th>
+          <th>Edit/Delete</th>
+        </tr>
+
+        <tr>
+          <th style="width: 3rem">
+          </th>
+          <th>
+            <p-columnFilter type="text" field="nom"></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter type="text" field="an"></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter type="text" field="h"></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter type="text" field="pt"></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter type="text" field="fct"></p-columnFilter>
+          </th>
+          <th></th>
+
+
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-usager>
+        <tr style="cursor: pointer;">
+          <td>
+            <p-tableCheckbox [value]="usager"></p-tableCheckbox>
+          </td>
+          <td>{{usager.nom}}</td>
+          <td>{{usager.an | date:'short'}}</td>
+          <td>{{usager.h}}</td>
+          <td>{{usager.pt}}</td>
+          <td>{{usager.fct}}</td>
+          <td>
+            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)="editUsager(usager)"></button>
+            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning ml-2" (click)="deleteUsager(usager)"></button>
+          </td>
+        </tr>
+      </ng-template>
+
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="7">No usagers found.</td>
+        </tr>
+      </ng-template>
+
+      <p-paginator [rows]="10" [totalRecords]="usagers.length" [rowsPerPageOptions]="[10,20,30]"></p-paginator>
+    </p-table>
+  </div>
+</div>
+
+
+
+<p-dialog [(visible)]="usagerDialog" [style]="{width: '450px'}" header="Usager Details" [modal]="true"
+          styleClass="p-fluid">
+  <ng-template pTemplate="content">
+    <div class="p-field">
+      <label for="nom">Title</label>
+      <input type="text" pInputText id="nom" [(ngModel)]="usager.nom" required autofocus />
+      <small class="p-invalid" *ngIf="submitted && !usager.nom">Title is required.</small>
+    </div>
+    <div class="p-field">
+      <label for="h">Description</label>
+      <textarea id="h" pInputTextarea [(ngModel)]="usager.h" required rows="3" cols="20"></textarea>
+    </div>
+    <div class="p-field">
+      <label for="pt">TotalThemes</label>
+      <input type="text" pInputText id="pt" [(ngModel)]="usager.pt" required autofocus />
+    </div>
+
+    <div class="p-field">
+      <label for="fct">TotalViews</label>
+      <input type="text" pInputText id="fct" [(ngModel)]="usager.fct" required autofocus />
+    </div>
+
+
+
+
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+    <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveUsager()"></button>
+  </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
