@@ -35,6 +35,9 @@ import { UsagerUpdateComponent } from './componants/usager/usager-update/usager-
 
 import { DatePipe } from '@angular/common';
 import {PanelModule} from "primeng/panel";
+import { TransportsCrudComponent } from './componants/transports/transports-crud/transports-crud.component';
+import { TransportsAddComponent } from './componants/transports/transports-add/transports-add.component';
+import { TransportsUpdateComponent } from './componants/transports/transports-update/transports-update.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +47,10 @@ import {PanelModule} from "primeng/panel";
     TransportsComponent,
     UsagerCrudComponent,
     UsagerAddComponent,
-    UsagerUpdateComponent
+    UsagerUpdateComponent,
+    TransportsCrudComponent,
+    TransportsAddComponent,
+    TransportsUpdateComponent
   ],
   imports: [
     BrowserModule,
