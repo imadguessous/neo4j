@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
 
-div,nav,h1, ng-template,p,button,table
+div,nav,h1, ng-template,p,form
 {
   font-family: 'Raleway';
 }

@@ -8,7 +8,8 @@
       <ng-template pTemplate="left">
         <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2"
                 (click)="openNew()"></button>
-        <button pButton pRipple icon="pi pi-trash" class="p-button-danger ml-3" (click)="deleteSelectedUsagers()" [disabled]="!selectedUsagers || !selectedUsagers.length"></button>
+        <button pButton pRipple icon="pi pi-trash" class="p-button-danger ml-3" (click)="deleteSelectedUsagers()"
+                [disabled]="!selectedUsagers || !selectedUsagers.length"></button>
 
       </ng-template>
 
@@ -16,7 +17,8 @@
 
     <p-table #dt1 [value]="usagers"
              [globalFilterFields]="['nom','an','h','pt','fct']" [paginator]="true" [rows]="4"
-             [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+             [showCurrentPageReport]="true"
+             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
              [rowHover]="true"
              [(selection)]="selectedUsagers"
     >
@@ -26,7 +28,7 @@
           <span class="p-input-icon-right p-ml-auto">
             <i class="pi pi-search"></i>
             <input pInputText type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')"
-                   placeholder="Search keyword" />
+                   placeholder="Search keyword"/>
           </span>
         </div>
       </ng-template>
@@ -36,15 +38,20 @@
           <th style="width: 3rem">
             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
           </th>
-          <th pSortableColumn="nom">Title<p-sortIcon field="nom"></p-sortIcon>
+          <th pSortableColumn="nom">Nom
+            <p-sortIcon field="nom"></p-sortIcon>
           </th>
-          <th pSortableColumn="an">Date<p-sortIcon field="an"></p-sortIcon>
+          <th pSortableColumn="an">Année de Naissance
+            <p-sortIcon field="an"></p-sortIcon>
           </th>
-          <th pSortableColumn="h">Description<p-sortIcon field="h"></p-sortIcon>
+          <th pSortableColumn="h">Handicape
+            <p-sortIcon field="h"></p-sortIcon>
           </th>
-          <th pSortableColumn="pt">TotalThemes<p-sortIcon field="pt"></p-sortIcon>
+          <th pSortableColumn="pt">Préférence Transport
+            <p-sortIcon field="pt"></p-sortIcon>
           </th>
-          <th pSortableColumn="fct">TotalViews<p-sortIcon field="fct"></p-sortIcon>
+          <th pSortableColumn="fct">Fonction
+            <p-sortIcon field="fct"></p-sortIcon>
           </th>
           <th>Edit/Delete</th>
         </tr>
@@ -83,8 +90,13 @@
           <td>{{usager.pt}}</td>
           <td>{{usager.fct}}</td>
           <td>
-            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)="editUsager(usager)"></button>
-            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning ml-2" (click)="deleteUsager(usager)"></button>
+            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                    (click)="editUsager(usager)"></button>
+
+
+
+            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning ml-2"
+                    (click)="deleteUsager(usager)"></button>
           </td>
         </tr>
       </ng-template>
@@ -102,38 +114,18 @@
 </div>
 
 
-
-<p-dialog [(visible)]="usagerDialog" [style]="{width: '450px'}" header="Usager Details" [modal]="true"
+<p-dialog (onHide)="hideDialog()" [(visible)]="usagerDialog" [style]="{width: '450px'}" header="Usager Details" [modal]="true"
           styleClass="p-fluid">
-  <ng-template pTemplate="content">
-    <div class="p-field">
-      <label for="nom">Title</label>
-      <input type="text" pInputText id="nom" [(ngModel)]="usager.nom" required autofocus />
-      <small class="p-invalid" *ngIf="submitted && !usager.nom">Title is required.</small>
-    </div>
-    <div class="p-field">
-      <label for="h">Description</label>
-      <textarea id="h" pInputTextarea [(ngModel)]="usager.h" required rows="3" cols="20"></textarea>
-    </div>
-    <div class="p-field">
-      <label for="pt">TotalThemes</label>
-      <input type="text" pInputText id="pt" [(ngModel)]="usager.pt" required autofocus />
-    </div>
+    <app-usager-add (add)="addUsager($event)"></app-usager-add>
 
-    <div class="p-field">
-      <label for="fct">TotalViews</label>
-      <input type="text" pInputText id="fct" [(ngModel)]="usager.fct" required autofocus />
-    </div>
+</p-dialog>
 
+<p-dialog (onHide)="hideDialog()" *ngIf="usager && submitted" [(visible)]="usagerUpdateDialog" [style]="{width: '450px'}" header="Usager Details" [modal]="true"
+          styleClass="p-fluid">
+  <app-usager-update [usager]="usager" (update)="updateUsager($event)"></app-usager-update>
 
-
-
-  </ng-template>
-
-  <ng-template pTemplate="footer">
     <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-    <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveUsager()"></button>
-  </ng-template>
+
 </p-dialog>
 
 <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

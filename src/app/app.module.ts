@@ -9,22 +9,29 @@ import { UsagerComponent } from './componants/usager/usager.component';
 import { TransportsComponent } from './componants/transports/transports.component';
 
 import {AccordionModule} from 'primeng/accordion';     //accordion and accordion tab
-import {MenuItem} from 'primeng/api';                  //api
 import {TableModule} from 'primeng/table';
 import {PaginatorModule} from 'primeng/paginator';
 import { UsagerCrudComponent } from './componants/usager/usager-crud/usager-crud.component';
 import {ToastModule} from 'primeng/toast';
 import {ToolbarModule} from 'primeng/toolbar';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
-import {Dialog, DialogModule} from 'primeng/dialog';
+import {DialogModule} from 'primeng/dialog';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReactiveFormsModule } from '@angular/forms';
 
-import {Component} from '@angular/core';
 import {MessageService} from 'primeng/api';
-
-
 import {ConfirmationService} from 'primeng/api';
 import {UsagersService} from "./services/usagers.service";
 import {HttpClientModule} from "@angular/common/http";
+
+
+import { InputTextModule } from "primeng/inputtext";
+import { InputNumberModule } from "primeng/inputnumber";
+import { RadioButtonModule } from "primeng/radiobutton";
+import {TransportsService} from "./services/transports.service";
+import { UsagerAddComponent } from './componants/usager/usager-add/usager-add.component';
+import { UsagerUpdateComponent } from './componants/usager/usager-update/usager-update.component';
+import { UsagerRowComponent } from './componants/usager/usager-row/usager-row.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +39,10 @@ import {HttpClientModule} from "@angular/common/http";
     HomeComponent,
     UsagerComponent,
     TransportsComponent,
-    UsagerCrudComponent
+    UsagerCrudComponent,
+    UsagerAddComponent,
+    UsagerUpdateComponent,
+    UsagerRowComponent
   ],
   imports: [
     BrowserModule,
@@ -45,9 +55,14 @@ import {HttpClientModule} from "@angular/common/http";
     ToolbarModule,
     ConfirmDialogModule,
     DialogModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    InputTextModule,
+    InputNumberModule,
+    RadioButtonModule,
+    ReactiveFormsModule
   ],
-  providers: [MessageService, ConfirmationService, UsagersService],
+  providers: [MessageService, ConfirmationService, UsagersService, TransportsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

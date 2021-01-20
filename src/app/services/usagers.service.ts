@@ -33,5 +33,9 @@ export class UsagersService {
     return this.http.delete(this.host + "/users/" + cin);
   }
 
+  getUsagersFonctions(): Array<string>{
+    return new Array<string>("ETUDIANT","SALARIE","LIBERAL","RETRAITE","Fonctionnaire");
+  }
+
 
 }

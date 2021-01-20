@@ -1,0 +1,22 @@
+<tr style="cursor: pointer;">
+  <td>
+    <p-tableCheckbox [value]="usager"></p-tableCheckbox>
+  </td>
+  <td>{{usager.nom}}</td>
+  <td>{{usager.an | date:'short'}}</td>
+  <td>{{usager.h}}</td>
+  <td>{{usager.pt}}</td>
+  <td>{{usager.fct}}</td>
+  <td>
+    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+            (click)="editUsager(usager)"></button>
+
+    <p-dialog [(visible)]="usagerUpdateDialog" [style]="{width: '450px'}" header="Usager Details" [modal]="true"
+              styleClass="p-fluid">
+      <app-usager-update [usager]="usager" (update)="updateUsager($event)"></app-usager-update>
+    </p-dialog>
+
+    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning ml-2"
+            (click)="deleteUsager(usager)"></button>
+  </td>
+</tr>
