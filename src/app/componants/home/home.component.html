@@ -1,4 +1,27 @@
-<div class="container-fluid">
+<!--<p-accordion [multiple]="true">
+  <p-accordionTab header="Usagers">
+    <app-usager></app-usager>
+  </p-accordionTab>
+  <p-accordionTab header="Transports">
+    <app-transports></app-transports>
+  </p-accordionTab>
+</p-accordion>-->
+
+<div class="m-2">
+<p-fieldset legend="Usagers" [toggleable]="true">
+  <app-usager></app-usager>
+</p-fieldset>
+</div>
+<div class="m-2">
+<p-fieldset legend="Transports" [toggleable]="true">
+  <app-transports></app-transports>
+</p-fieldset>
+</div>
+
+
+
+
+<!--<div class="container-fluid">
   <h1>Usagers</h1>
   <p-splitter [style]="{'height': '450px'}" styleClass="p-mb-5" layout="vertical">
     <ng-template>
@@ -13,4 +36,4 @@
       </div>
     </ng-template>
   </p-splitter>
-</div>
+</div>-->

@@ -18,6 +18,7 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {DialogModule} from 'primeng/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
+import {FieldsetModule} from 'primeng/fieldset';
 
 import {MessageService} from 'primeng/api';
 import {ConfirmationService} from 'primeng/api';
@@ -31,7 +32,9 @@ import { RadioButtonModule } from "primeng/radiobutton";
 import {TransportsService} from "./services/transports.service";
 import { UsagerAddComponent } from './componants/usager/usager-add/usager-add.component';
 import { UsagerUpdateComponent } from './componants/usager/usager-update/usager-update.component';
-import { UsagerRowComponent } from './componants/usager/usager-row/usager-row.component';
+
+import { DatePipe } from '@angular/common';
+import {PanelModule} from "primeng/panel";
 
 @NgModule({
   declarations: [
@@ -41,8 +44,7 @@ import { UsagerRowComponent } from './componants/usager/usager-row/usager-row.co
     TransportsComponent,
     UsagerCrudComponent,
     UsagerAddComponent,
-    UsagerUpdateComponent,
-    UsagerRowComponent
+    UsagerUpdateComponent
   ],
   imports: [
     BrowserModule,
@@ -60,9 +62,11 @@ import { UsagerRowComponent } from './componants/usager/usager-row/usager-row.co
     InputTextModule,
     InputNumberModule,
     RadioButtonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PanelModule,
+    FieldsetModule
   ],
-  providers: [MessageService, ConfirmationService, UsagersService, TransportsService],
+  providers: [MessageService, ConfirmationService, UsagersService, TransportsService, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

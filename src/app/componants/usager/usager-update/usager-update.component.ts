@@ -3,7 +3,7 @@ import {Usager} from "../../../models/usager.model";
 import {FormControl, FormGroup} from "@angular/forms";
 import {UsagersService} from "../../../services/usagers.service";
 import {TransportsService} from "../../../services/transports.service";
-
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -25,7 +25,7 @@ export class UsagerUpdateComponent implements OnInit {
   usagersFonctions: Array<string>;
   defaultUsagerFonction: string ;
   usagerForm: FormGroup;
-  constructor(private usagerService: UsagersService, private transportService: TransportsService) { }
+  constructor(private datePipe: DatePipe, private usagerService: UsagersService, private transportService: TransportsService) { }
 
   ngOnInit(): void {
 
@@ -41,16 +41,27 @@ export class UsagerUpdateComponent implements OnInit {
       this.defaultUsagerFonction = this.usagersFonctions[0];
     }
 
+    console.log(this.usager.an);
+    console.log();
+    const date: string = this.usager.an.getFullYear() + "-" + this.usager.an.getMonth() + "-" + this.usager.an.getDate();
+
+
+
     this.usagerForm = new FormGroup({
+      id:new FormControl(this.usager.id),
       nom: new FormControl(this.usager.nom),
-      an: new FormControl(this.usager.an),
+      an: new FormControl(this.datePipe.transform(this.usager.an,'yyyy-MM-dd')),
       h: new FormControl(this.usager.h),
       pt: new FormControl(this.usager.pt),
       fct: new FormControl(this.usager.fct),
 
+
     })
   }
   updateUsager(value){
+    console.log(value.an);
+    value.an = new Date(value.an);
+    console.log('update Usager: '+ value);
     this.update.emit(value);
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Usager} from "../../../models/usager.model";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {UsagersService} from "../../../services/usagers.service";
@@ -18,18 +18,16 @@ export class UsagerCrudComponent implements OnInit {
   usagerDialog: boolean;
   usager: Usager;
   submitted: boolean = false;
+  deleted: boolean = false;
 
   usagerUpdateDialog: boolean;
 
-  constructor(private messageService: MessageService, private usagerService: UsagersService, private confirmationService: ConfirmationService) { }
+  constructor(private messageService: MessageService, private usagerService: UsagersService, private confirmationService: ConfirmationService) {
+  }
 
   ngOnInit(): void {
     this.usagers = new Array<Usager>();
-    this.initUsagers();
-    console.log('INIT!!!!!!!!!!!!!!!!!!!!!!');
-
-
-
+    this.usagers = this.usagerService.initUsagers();
 
 
     /*this.getUsagers();
@@ -40,23 +38,7 @@ export class UsagerCrudComponent implements OnInit {
 
   }
 
-  initUsagers(){
-    let usager1: Usager = new Usager();
-    usager1.nom = "Imad";
-    usager1.an = new Date("2019-01-16");
-    usager1.h = false;
-    usager1.pt = "D";
-    usager1.fct = "Etudiant";
 
-    let usager2: Usager = new Usager();
-    usager2.nom = "Alae";
-    usager2.an = new Date("2019-01-15");
-    usager2.h = false;
-    usager2.pt = "D";
-    usager2.fct = "Etudiant";
-    this.usagers.push(usager1);
-    this.usagers.push(usager2);
-  }
   getUsagers() {
     //this.usagerService.getUsagersFromBackend().subscribe(
     // this.usagerService.getUsagers().subscribe(
@@ -69,40 +51,63 @@ export class UsagerCrudComponent implements OnInit {
     // );
   }
 
+
+
+
   openNew() {
     this.usager = new Usager();
     this.submitted = false;
     this.usagerDialog = true;
   }
 
-  deleteSelectedUsagers() {
-    // for (let usager of this.selectedUsagers){
-    //   this.deleteUsager(usager);
-    // }
-  }
-
   editUsager(usager: Usager) {
     console.log(usager);
-    this.usager = {...usager};
-    this.submitted = true;
+    this.usager = usager;
 
+    this.submitted = true;
     this.usagerUpdateDialog = true;
   }
-  deleteUsager(usager: Usager) {
-    /*console.log(usager);
 
-    this.usagerService.deleteUsagerInBackend(usager).subscribe(
-      (data) => {
-        console.log(this.usager);
-        this.usagerDialog = false;
-        window.location.reload();
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Usager Deleted Successfuly' });
+
+  deleteUsager(usager: Usager) {
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to perform this action?',
+      accept: () => {
+        //Actual logic to perform a confirmation
+        this.deleteUsagerFromArray(usager);
+        this.messageService.add({severity: 'success', summary: 'Delete Successfully', detail: 'Delete Usager Successfully'});
+
       },
-      (err) => {
-        console.log(err.message)
-        this.messageService.add({ severity: 'danger', summary: 'Error', detail: 'Usager Failed To Edit' });
+      reject: () => {
+        this.messageService.add({severity: 'error', summary: 'Delete Cancel', detail: 'Delete Usager Cancel'});
       }
-    );*/
+    });
+
+  }
+
+
+  deleteSelectedUsagers() {
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to perform this action?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        for(let usager of this.selectedUsagers){
+          this.deleteUsagerFromArray(usager);
+        }
+        this.messageService.add({severity: 'success', summary: 'Delete Successfully', detail: 'Delete Selected Usagers Successfully'});
+
+      },
+      reject: () => {
+        this.messageService.add({severity: 'error', summary: 'Delete Canceled', detail: 'Delete Selected Usagers Canceled'});
+      }
+    });
+  }
+
+  deleteUsagerFromArray(usager: Usager) {
+    this.usagers = this.usagers.filter((ele) => {
+      return ele.id !== usager.id;
+    });
   }
 
   saveUsager() {
@@ -119,20 +124,19 @@ export class UsagerCrudComponent implements OnInit {
       //     this.messageService.add({ severity: 'danger', summary: 'Error', detail: 'Usager Failed To Add' });
       //   }
       // );
-    }
-    else {
+    } else {
       console.log(this.usager);
       // this.usagerService.createUsagerInBackend(this.usager).subscribe(
       this.usagerService.addUsager(this.usager).subscribe(
         (data) => {
           console.log(this.usager);
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Usager Edited Successfuly' });
+          this.messageService.add({severity: 'success', summary: 'Success', detail: 'Usager Edited Successfuly'});
           this.usagerDialog = false;
           window.location.reload();
         },
         (err) => {
           console.log(err.message)
-          this.messageService.add({ severity: 'danger', summary: 'Error', detail: 'Usager Failed To Edit' });
+          this.messageService.add({severity: 'danger', summary: 'Error', detail: 'Usager Failed To Edit'});
         }
       );
     }
@@ -149,6 +153,7 @@ export class UsagerCrudComponent implements OnInit {
   addUsager($event: any) {
     // To change
     this.usagers.push($event);
+    this.messageService.add({severity: 'success', summary: 'Added Successfully', detail: 'Added Usager Successfully'});
     this.hideDialog();
 
   }
@@ -156,9 +161,11 @@ export class UsagerCrudComponent implements OnInit {
   updateUsager($event: any) {
     let usager: Usager = $event;
 
-    const objIndex = this.usagers.findIndex((obj => obj.nom == usager.nom));
-    this.usagers[objIndex]= usager;
+    const objIndex = this.usagers.findIndex((obj => obj.id == usager.id));
+    this.usagers[objIndex] = usager;
     console.log(this.usagers);
+    this.messageService.add({severity: 'success', summary: 'Updated Successfully', detail: 'Updated Usager Successfully'});
+
 
     this.hideDialog();
   }

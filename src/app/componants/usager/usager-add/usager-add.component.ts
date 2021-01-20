@@ -47,6 +47,7 @@ export class UsagerAddComponent implements OnInit {
     })
   }
   saveUsager(value){
+    value.an = new Date(value.an);
     console.log(value);
 
     this.add.emit(value);
